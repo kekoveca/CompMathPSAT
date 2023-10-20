@@ -1,9 +1,10 @@
 #include <gtest/gtest.h>
 #include "../src/NumDerivative.hpp"
-#include "../src/SlaeSolver.hpp"
 
 
-TEST(TestSuite1, Test1) {
-    std::vector<std::vector<float>> A(2, std::vector<float>(2));
-    ASSERT_NO_FATAL_FAILURE(t_f());
+TEST(NumDerivativeTests, FirstTest){
+    const unsigned int N = 2;
+    const std::array<double, 2> points = {-2, 3};
+    DerivativeCoef<double, 2> ans = calcDerivativeCoef(points);
+    ASSERT_NO_FATAL_FAILURE();
 }
