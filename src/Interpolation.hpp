@@ -34,6 +34,7 @@ class NewtonInterpolator {
     }
 };
 
+
 template<typename xType, typename yType, unsigned int N>
 class EigenNewtonInterpolator {
     Eigen::Array<xType, N, 1> splitDifferencies;
