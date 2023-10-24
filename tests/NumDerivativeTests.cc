@@ -3,18 +3,23 @@
 #include <iostream>
 #include <fstream>
 
-const std::string dataPath = "C:/Users/kekoveca/Documents/CompMathPSAT/post_proccessing";
+const std::string dataPath = "/Users/kekoveca/Documents/MIPT/CompMath/post_proccessing/NumDerivativeFolder";
+
+TEST(NumDerivativeTests, simple){
+    std::array<double, 2> points = {-1, 1};
+    auto coeffs = calcDerivativeCoef(points);
+    ASSERT_NEAR(coeffs[0], 0, 1e-15);
+    ASSERT_NEAR(coeffs[1], -0.5, 1e-15);
+    ASSERT_NEAR(coeffs[2], 0.5, 1e-15);
+}
 
 TEST(NumDerivativeTests, main){
     std::ofstream fileOut;
-    fileOut.open(dataPath + "/NumDerivativeFolder/errors.txt");
-
-    const unsigned int N = 2;
-    const std::array<float, N> points = {1, 2};
-
-    auto coeffs = calcDerivativeCoef(points);
+    fileOut.open(dataPath + "/errors.txt");
 
     constexpr double x = 1.;
+
+    const double exp0 = std::exp(x); 
 
     constexpr unsigned int N3 = 3;
     constexpr unsigned int N4 = 4;
@@ -24,7 +29,7 @@ TEST(NumDerivativeTests, main){
     std::array<double, N4> pointsN4 = {1., 2., 3., 4.};
     std::array<double, N5> pointsN5 = {1., 2., 3., 4., 5.};
 
-    std::array<double, 16> h{};
+    std::array<double, 16> h;
 
     h[0] = 1;
 
@@ -34,38 +39,35 @@ TEST(NumDerivativeTests, main){
 
     auto coeffsN3 = calcDerivativeCoef(pointsN3);
 
-    const double exp0 = std::exp(x); 
+    for(auto&& iter : h) {
+        double DN3 = coeffsN3[0] * exp0;
+        for(unsigned int i = 0; i < pointsN3.size(); i++){
+            DN3 += coeffsN3[i + 1] * std::exp(x + pointsN3[i] * iter);
+        }
+        fileOut << std::abs(DN3 / iter - exp0)  <<  ",";
+    }
+    fileOut << std::endl;
+
+    auto coeffsN4 = calcDerivativeCoef(pointsN4);
 
     for(auto&& iter : h) {
-        double DN3 = coeffsN3[0] * exp0;                        // A_0 * f(x_0)
-        for(unsigned int i = 0; i < pointsN3.size(); i++){
-            DN3 += coeffsN3[i + 1] * pointsN3[i];               // A_i * f(x_0 + ih)
+        double DN4 = coeffsN4[0] * exp0;
+        for(unsigned int i = 0; i < pointsN4.size(); i++){
+            DN4 += coeffsN4[i + 1] * std::exp(x + pointsN4[i] * iter);
         }
-        fileOut<<std::abs(DN3 / iter - exp0)  <<  " ";
+        fileOut << std::abs(DN4 / iter - exp0)  <<  ",";
     }
-    fileOut<<std::endl;
+    fileOut << std::endl;
 
-    // DerivativeCoef<double, N4> answN4 = calcDerivativeCoef(pointsN4);
-    // //double DN4 = answN4.centralCoef * std::exp(x);
+    auto coeffsN5 = calcDerivativeCoef(pointsN5);
 
-    // for(auto&& it : h){
-    //     double DN4 = answN4.centralCoef * std::exp(x);
-    //     for(std::uint64_t j = 0; j < pointsN4.size(); j++){
-    //         DN4+=answN4.otherCoefs[j] * std::exp(x + pointsN4[j]*it);
-    //     }
-    //     fileOut<<std::abs(double(DN4)/it - double(std::exp(x)))<<" ";
-    // }
-    // fileOut<<std::endl;
-
-    // DerivativeCoef<double, N5> answN5 = calcDerivativeCoef(pointsN5);
-    // //double DN5 = answN5.centralCoef * std::exp(x);
-    // for(auto&& it : h){
-    //     double DN5 = answN5.centralCoef * std::exp(x);
-    //     for(std::uint64_t j = 0; j < pointsN5.size(); j++){
-    //         DN5+=answN5.otherCoefs[j] * std::exp(x + pointsN5[j]*it);
-    //     }
-    //     fileOut<<std::abs(DN5/it - std::exp(x))<<" ";
-    // }
-    fileOut<<std::endl;
+    for(auto&& iter : h) {
+        double DN5 = coeffsN5[0] * exp0;
+        for(unsigned int i = 0; i < pointsN5.size(); i++){
+            DN5 += coeffsN5[i + 1] * std::exp(x + pointsN5[i] * iter);
+        }
+        fileOut << std::abs(DN5 / iter - exp0)  <<  ",";
+    }
+    fileOut << std::endl;
     fileOut.close();
 }

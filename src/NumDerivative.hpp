@@ -1,11 +1,6 @@
 #include <Eigen/Dense>
 #include <cmath>
 
-// template<typename RealType, std::size_t N>
-// struct DerivativeCoef {
-//     RealType centralCoef;
-//     std::array<RealType, N> otherCoefs;
-// };
 
 template<typename RealType, std::size_t N>
 auto calcDerivativeCoef(const std::array<RealType, N>& points) {
