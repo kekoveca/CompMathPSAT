@@ -48,13 +48,9 @@ TEST(InterpolantTests, simpleTest){
 
 
 TEST(InterpolantTests, Test){
-    std::ofstream fileOutN3;
-    std::ofstream fileOutN4;
-    std::ofstream fileOutN5;
+    std::ofstream fileOutN345;
 
-    fileOutN3.open(dataPath + "/errN3.txt");
-    fileOutN4.open(dataPath + "/errN4.txt");
-    fileOutN5.open(dataPath + "/errN5.txt");
+    fileOutN345.open(dataPath + "/errN345.txt");
 
     constexpr int power = 6;
 
@@ -82,8 +78,9 @@ TEST(InterpolantTests, Test){
             auto fInterpolated = interpolator.interpolate(pointsMatrixErr3.col(i)(j));
             err = std::max(std::abs(valuesMatrixErr3.col(i)(j) - fInterpolated), err);
         }
-        fileOutN3 << err << "\n";
+        fileOutN345 << err << ",";
     }
+    fileOutN345 << "\n";
 
     // N = 4
 
@@ -109,8 +106,9 @@ TEST(InterpolantTests, Test){
             auto fInterpolated = interpolator.interpolate(pointsMatrixErr4.col(i)(j));
             err = std::max(std::abs(valuesMatrixErr4.col(i)(j) - fInterpolated), err);
         }
-        fileOutN4 << err << "\n";
+        fileOutN345 << err << ",";
     }
+    fileOutN345 << "\n";
 
     // N = 5
 
@@ -136,6 +134,7 @@ TEST(InterpolantTests, Test){
             auto fInterpolated = interpolator.interpolate(pointsMatrixErr5.col(i)(j));
             err = std::max(std::abs(valuesMatrixErr5.col(i)(j) - fInterpolated), err);
         }
-        fileOutN5 << err << "\n";
+        fileOutN345 << err << ",";
     }
+    fileOutN345 << "\n";
 }
