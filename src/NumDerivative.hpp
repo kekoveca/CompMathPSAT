@@ -2,6 +2,19 @@
 #include <cmath>
 #include <numeric>
 
+const unsigned int factorial(unsigned int L) {
+    if(L == 0) {
+        return 0;
+    }
+    else {
+        unsigned int l = 1;
+        for(unsigned int i = 1; i < L + 1; i++) {
+            l *= i;
+        }
+        return l;
+    }
+}
+
 template<typename RealType, unsigned int N>
 struct DerivativeCoef {
     RealType centralCoef;
@@ -9,11 +22,11 @@ struct DerivativeCoef {
 };
 
 
-template<typename RealType, std::size_t N>
+template<typename RealType, std::size_t N, unsigned int L>
 DerivativeCoef<RealType, N> calcDerivativeCoef(const std::array<RealType, N>& points) {
     Eigen::Vector<RealType, N> b;
     b.setZero();
-    b(0) = RealType(1);
+    b(L - 1) = RealType(factorial(L));
 
     Eigen::Matrix<RealType, N, N> A;
 
