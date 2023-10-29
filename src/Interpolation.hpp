@@ -17,11 +17,11 @@ class NewtonInterpolator {
         }
     }
 
-    std::array<xType, N> getPoints() const{
+    const std::array<xType, N>& getPoints() const{
         return points;
     }
 
-    std::array<yType, N> getsplitDifferencies() const{
+    const std::array<yType, N>& getsplitDifferencies() const{
         return splitDifferencies;
     }
 
@@ -51,11 +51,11 @@ class EigenNewtonInterpolator {
         }
     }
 
-    Eigen::Array<xType, N, 1> getPoints() const{
+    const Eigen::Array<xType, N, 1>& getPoints() const{
         return points;
     }
 
-    Eigen::Array<yType, N, 1>  getsplitDifferencies() const{
+    const Eigen::Array<yType, N, 1>&  getsplitDifferencies() const{
         return splitDifferencies;
     }
 
