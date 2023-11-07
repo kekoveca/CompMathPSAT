@@ -228,7 +228,6 @@ class CubicSpline {
     }
 
     yType interpolate(const xType& X) const noexcept {
-        auto it = std::lower_bound(std::begin(x), std::end(x), X, std::less<xType>());
         if(X <= x[0]) {
             return u[1] + bCoeffs[0] * (X - x[1]) + cCoeffs[0] * std::pow((X - x[1]), 2) / 2 + dCoeffs[0] * std::pow((X - x[1]), 3) / 6;
         }
