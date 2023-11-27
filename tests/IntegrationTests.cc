@@ -111,10 +111,10 @@ TEST(IntegrationTests, richardsonTest) {
     fileOut.close();
 }
 
-TEST(IntegrationTests, RungeRuleTest) {
+TEST(IntegrationTests, basicRungeRuleTest) {
     double answer = 1. - std::cos(double(10.));
     constexpr double start = 0;
     constexpr double end = 10;
     auto answer_computed = integrateRungeRule<double(double), 2>(std::sin, start, end, 10., 1e-15);
-    ASSERT_NEAR(answer_computed, answer, 1e-14);
+    ASSERT_NEAR(answer_computed, answer, 1e-15);
 }

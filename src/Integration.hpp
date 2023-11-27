@@ -149,7 +149,7 @@ decltype(auto) integrateRungeRule(const Callable& func,
         dx = dx / 2.;
         Ih = integrate<double(double), N>(func, start, end, dx);
         Ih2 = integrate<double(double), N>(func, start, end, dx / 2.);
-        delta = theta * std::abs(Ih - Ih2);  
+        delta = theta * std::abs(Ih2 - Ih);  
     }
-    return Ih;
+    return Ih2 + delta;
 }
