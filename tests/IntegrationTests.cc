@@ -18,9 +18,10 @@ TEST(IntegrationTests, basicTest) {
     std::cout << std::abs(answer - integrate<double(double), 15>(std::sin, start, end)) << "\n";
 }
 
-TEST(IntegrationTests, firstTest){
+TEST(IntegrationTests, mainTest){
     std::ofstream fileOut;
     fileOut.open(dataPath + "/err.txt");
+
     constexpr double start = 0;
     constexpr double end = 10;
     constexpr std::array dx{8., 4., 2., 1., 1./2., 1./4., 1./8., 1./16., 1./32., 1./64., 1./128., 1./256., 1./512., 1./1024.};
@@ -49,4 +50,71 @@ TEST(IntegrationTests, firstTest){
         fileOut << std::abs(answer - integrate<double(double), 15>(std::sin, start, end, it)) << ",";
     }
     fileOut.close();
+}
+
+TEST(IntegrationTests, richardsonTest) {
+    std::ofstream fileOut;
+    fileOut.open(dataPath + "/errRichardson.txt");
+
+    double answer = 1. - std::cos(double(10.));
+    constexpr double start = 0;
+    constexpr double end = 10;
+    std::array dx{8., 4., 2., 1., 1./2., 1./4., 1./8., 1./16., 1./32., 1./64., 1./128., 1./256., 1./512., 1./1024.};
+
+    for(auto&& it: dx){
+        fileOut << std::abs(answer - integrate<double(double), 2>(std::sin, start, end, it)) << ",";
+    }
+    fileOut << "\n";
+    for(auto&& it: dx){
+        fileOut << std::abs(answer - integrateRichardsonExtrapolate<double(double), 2>(std::sin, start, end, it)) << ",";
+    }
+    fileOut << "\n";
+
+    for(auto&& it: dx){
+        fileOut << std::abs(answer - integrate<double(double), 3>(std::sin, start, end, it)) << ",";
+    }
+    fileOut << "\n";
+    for(auto&& it: dx){
+        fileOut << std::abs(answer - integrateRichardsonExtrapolate<double(double), 3>(std::sin, start, end, it)) << ",";
+    }
+    fileOut << "\n";
+
+    for(auto&& it: dx){
+        fileOut << std::abs(answer - integrate<double(double), 4>(std::sin, start, end, it)) << ",";
+    }
+    fileOut << "\n";
+    for(auto&& it: dx){
+        fileOut << std::abs(answer - integrateRichardsonExtrapolate<double(double), 4>(std::sin, start, end, it)) << ",";
+    }
+    fileOut << "\n";
+
+    for(auto&& it: dx){
+        fileOut << std::abs(answer - integrate<double(double), 5>(std::sin, start, end, it)) << ",";
+    }
+    fileOut << "\n";
+    for(auto&& it: dx){
+        fileOut << std::abs(answer - integrateRichardsonExtrapolate<double(double), 5>(std::sin, start, end, it)) << ",";
+    }
+    fileOut << "\n";
+
+    
+    for(auto&& it: dx){
+        fileOut << std::abs(answer - integrate<double(double), 6>(std::sin, start, end, it)) << ",";
+    }
+    fileOut << "\n";
+    for(auto&& it: dx){
+        fileOut << std::abs(answer - integrateRichardsonExtrapolate<double(double), 6>(std::sin, start, end, it)) << ",";
+    }
+    fileOut << "\n";
+
+
+    fileOut.close();
+}
+
+TEST(IntegrationTests, RungeRuleTest) {
+    double answer = 1. - std::cos(double(10.));
+    constexpr double start = 0;
+    constexpr double end = 10;
+    auto answer_computed = integrateRungeRule<double(double), 2>(std::sin, start, end, 10., 1e-15);
+    ASSERT_NEAR(answer_computed, answer, 1e-14);
 }

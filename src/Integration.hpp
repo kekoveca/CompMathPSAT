@@ -120,3 +120,36 @@ decltype(auto) integrate(const Callable& func, const typename ArgumentGetter<Cal
     }
     return ans;
 }
+
+
+template<typename Callable, std::size_t N>
+decltype(auto) integrateRichardsonExtrapolate(const Callable& func, 
+                                            const typename ArgumentGetter<Callable>::Argument& start, 
+                                            const typename ArgumentGetter<Callable>::Argument& end, 
+                                            const Dif<typename ArgumentGetter<Callable>::Argument>& dx) {
+    decltype(auto) Ih = integrate<double(double), N>(func, start, end, dx);
+    decltype(auto) Ih2 = integrate<double(double), N>(func, start, end, dx / 2.);
+    return Ih2 + (Ih2 - Ih) / (std::pow(2, 2 * N) - 1);
+}
+
+
+template<typename Callable, std::size_t N>
+decltype(auto) integrateRungeRule(const Callable& func, 
+                                const typename ArgumentGetter<Callable>::Argument& start, 
+                                const typename ArgumentGetter<Callable>::Argument& end, 
+                                Dif<typename ArgumentGetter<Callable>::Argument> dx,
+                                const typename ArgumentGetter<Callable>::Argument& tolerance) {
+    
+    decltype(auto) Ih = integrate<double(double), N>(func, start, end, dx);
+    decltype(auto) Ih2 = integrate<double(double), N>(func, start, end, dx / 2.);
+    const auto theta = 1 / (std::pow(2, 2 * N) - 1);
+    decltype(auto) delta = theta * std::abs(Ih - Ih2);
+    decltype(Ih) ans;
+    while(delta > tolerance) {
+        dx = dx / 2.;
+        Ih = integrate<double(double), N>(func, start, end, dx);
+        Ih2 = integrate<double(double), N>(func, start, end, dx / 2.);
+        delta = theta * std::abs(Ih - Ih2);  
+    }
+    return Ih;
+}
