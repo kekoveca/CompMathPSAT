@@ -3,18 +3,6 @@
 #include <algorithm>
 #include <map>
 
-class ZerosAndWeights {
-    public:
-    std::vector<double> zeros_, weights_;
-    ZerosAndWeights(const std::vector<double>& zeros, const std::vector<double>& weights){
-        auto size = zeros_.size();
-        zeros_.resize(size);
-        weights_.resize(size);
-        zeros_ = zeros;
-        weights_ = weights;
-    };
-};
-
 const std::vector<double> LEJENDRE_ZEROS_2    = {0.577350269189626};
 const std::vector<double> LEJENDRE_WEIGHTS_2  = {1.};
 
