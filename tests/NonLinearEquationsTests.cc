@@ -42,10 +42,16 @@ TEST(NonLinearEquationsTests, mpiTest) {
     // на отрезке [0, 1] имеем m = 0, M ~ 12 => tau_opt ~ -1/6. Минус из-за того, что f' > 0
     // решения системы - пересечения окружности с центром в начале координат и тангенса, отсюда сразу понятно,
     // что численно нужно искать только один корень
+
+    std::ofstream fileOut;
+    fileOut.open(dataPath + "/solutions.txt");
+
     auto ans = solve<double(double), double>(F, -1./6, 0.8, 100, 1e-6);
     auto x1 = ans.second;
     auto y1 = std::tan(x1);
     auto x2 = - x1; 
     auto y2 = - y1; 
-    std::cout << "Решения:\n(" << x1 << ", " << y1 <<")\n(" << x2 << ", " << y2 << ")\n";
+    fileOut << "Решения:\n(" << x1 << ", " << y1 <<")\n(" << x2 << ", " << y2 << ")\n";
+
+    fileOut.close();
 }
